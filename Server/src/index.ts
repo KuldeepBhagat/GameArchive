@@ -1,37 +1,45 @@
-import express, { type Request, type Response} from "express";
-import cors from 'cors';
+import express, { type Request, type Response } from "express";
+import cors from "cors"
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-
+import { RegisterValidationSchema } from "./schema/RegisterValidation";
+import { z } from "zod"
 
 dotenv.config();
 const app = express();
-const  port = 5000;
-const mongoURI = "mongodb+srv://kuldeep496242_db_user:Xzt5yAR06bbhFpk0@cluster0.n8pjrkl.mongodb.net/?appName=Cluster0"
+const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
 
-async function testMongo() {
+app.post("/api/register", (req: Request, res: Response) => {
     try {
-        console.log("trying to connect")
-        await mongoose.connect(mongoURI)
-        console.log("connected successfully")
-    } catch (err) {
-        console.error("failed", err)
-    } finally {
-        await mongoose.connection.close();
-    }
-}
+        // Authentication of payload
+        const result = RegisterValidationSchema.safeParse(req.body)
 
-app.post("/api/test", (req: Request, res: Response) => {
-    console.log("backend connected")
-    const {username, email, password } = req.body;
-    console.log(username, email, password)
-    testMongo();
-    res.json({data: "success"})
+        if(!result.success) {
+
+            const flattened = z.flattenError(result.error)
+
+            return res.status(400).json({
+                success: false,
+                error: "validation failed",
+                details: flattened.fieldErrors
+            })
+        }
+
+        const {username, email, password} = result.data
+        console.log(username, email, password)
+
+        res.status(200).json({ data: "success" })
+    } catch (error) {
+        if(error instanceof Error) {
+            res.status(409).json({error: error.message})
+        }
+        
+    }
 })
 
-app.listen(port, () => {
-    console.log("connected to PORT:", port);
+app.listen(PORT, () => {
+    console.log("connected to the server \nPORT: ", PORT)
 })

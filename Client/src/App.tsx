@@ -1,4 +1,3 @@
-import Header from "./components/utility/Header"
 import Main from "./components/utility/Main"
 export default function App() {
   return (
