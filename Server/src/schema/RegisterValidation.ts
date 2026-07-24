@@ -1,4 +1,4 @@
-import {email, z} from "zod"
+import {z} from "zod"
 
 export const RegisterValidationSchema = z.object({
     username: z
@@ -22,7 +22,6 @@ export const RegisterValidationSchema = z.object({
     .min(1, "Password is required")
     .refine((val) => val.length >= 8, "Password must be at least 8 characters long")
     .max(100, "Password is too long")
-
 })
 
 export type RegisterInput = z.infer<typeof RegisterValidationSchema>
