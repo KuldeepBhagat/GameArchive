@@ -1,7 +1,7 @@
+import { cursorTo } from "node:readline"
 import { z } from "zod"
 
-// username password can't be same
-export const usernameValidationSchema = z.object({
+export const usernameValidationSchema = (currentUsername: string) => z.object({
     password: z
         .string("Enter password")
         .min(1, "Enter password"),
@@ -15,9 +15,11 @@ export const usernameValidationSchema = z.object({
         .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores")
         .regex(/[a-zA-Z]/, "must contain at least one character")
         .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, "Username must start with a latter")
+        .refine((val) => val.toLocaleLowerCase() != currentUsername.toLocaleLowerCase(),
+            "Please enter a new username"
+        )
 })
 
-// old and new password should be different
 export const passwordValidationSchema = z.object({
     password: z
         .string("Enter password")
@@ -27,4 +29,7 @@ export const passwordValidationSchema = z.object({
         .min(1, "Enter new password")
         .refine((val) => val.length >= 8, "Password must be at least 8 characters long")
         .max(100, "Password is too long")
+}).refine((data) => data.newPassword != data.password, {
+    message: "Please enter a new password",
+    path: ["newPassword"]
 })

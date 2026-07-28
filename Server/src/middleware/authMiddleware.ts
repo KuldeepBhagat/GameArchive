@@ -11,6 +11,7 @@ export const authenticateToken = (
     res: Response,
     next: NextFunction
 ) => {
+    try {
     const authHeader = req.headers["authorization"]
     const token = authHeader?.split(" ")[1]
 
@@ -21,7 +22,7 @@ export const authenticateToken = (
         })
     }
 
-    try {
+    
 
         const decoded = jwt.verify(
             token,

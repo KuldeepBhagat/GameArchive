@@ -2,13 +2,20 @@ import {type Response} from "express"
 import {type AuthRequest } from "../middleware/authMiddleware";
 import { User } from "../Model/User";
 import { usernameValidationSchema } from "../Schema/changeValidation";
-import {success, z} from "zod"
+import {z} from "zod"
 import bcrypt from "bcryptjs"
 
-export const userChange = async (req: AuthRequest, res: Response) => {
+export const changeUsername = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId
-        const result = usernameValidationSchema.safeParse(req.body)
+
+        const user = await User.findById(userId)
+        if(!user) {
+            return res.status(404).json({error: "user not found"})
+        }
+
+        const changename = usernameValidationSchema(user.username)
+        const result = changename.safeParse(req.body)
 
         if(!result.success) {
             const flattened = z.flattenError(result.error)
@@ -21,10 +28,7 @@ export const userChange = async (req: AuthRequest, res: Response) => {
 
         const {password, newUsername} = result.data
         
-        const user = await User.findById(userId)
-        if(!user) {
-            return res.status(404).json({error: "user not found"})
-        }
+        
 
         const validation = await bcrypt.compare(password, user.passwordHash)
         if(!validation) {
@@ -37,7 +41,7 @@ export const userChange = async (req: AuthRequest, res: Response) => {
         const userExists = await User.findOne({username: newUsername})
         if(userExists) {
             return res.status(400).json({
-                details: {username: ["username already exists"]}
+                details: {newUsername: ["username already exists"]}
             })
         }
 
