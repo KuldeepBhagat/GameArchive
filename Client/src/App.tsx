@@ -1,10 +1,13 @@
-import Main from "./components/utility/Main"
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn"
 export default function App() {
   return (
-    <div className="min-h-screen flex justify-center">
-    <div className="flex flex-col shadow-2xl w-5xl bg-[#282724]">
-      < Main />
-    </div>
-  </div>
+      <Routes>
+        <Route path="/" element={<SignUp/>} />
+        <Route path="/signUp" element={<SignUp/>} />
+        <Route path="/signIn" element={<SignIn/>} />
+      </Routes>
   )
 }
