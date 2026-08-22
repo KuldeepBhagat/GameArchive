@@ -5,6 +5,7 @@ import RightArrow from "../assets/icons/rightArrow.svg?react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import AppError from "../components/customMethods/AppError"
+import signUpImage from "../assets/background/authenticationBackground.jpg"
 
 export default function SignUp() {
 
@@ -50,7 +51,7 @@ export default function SignUp() {
         } catch (error) {
             if (error instanceof AppError) {
                 console.error(error.details)
-                navigate("/Error", {state: {
+                navigate("/error", {state: {
                     message: error.message,
                     details: error.details
                 }})
@@ -83,15 +84,21 @@ export default function SignUp() {
                         ease-in-out duration-300`
 
     return (
-        <div className="fixed w-full h-full flex justify-center items-center">
-            <div className="flex flex-col justify-center">
+        <div className="fixed w-full h-full flex justify-center items-center 
+                      md:bg-amber-50 
+                      md:justify-center">
+            <div className="flex flex-col justify-center
+                          md:bg-green-300
+                            md:rounded-l-xl
+                            md:w-150 md:h-150
+                            ">
                 <div className="flex flex-col p-6 gap-1">
                     <h1 className="text-3xl font-bold">Sign Up</h1>
                     <p className="text-black/50">please sign up to continue</p>
                 </div>
                 <form action="" className=" gap-2 text-md p-6 w-md 
                                             flex flex-col justify-cente 
-                                            items-center"
+                                            items-center self-center"
                     onSubmit={HandleFrom} name="signup">
                     <div className={InputContainerStyle}>
                         <User className={IconStyle} />
@@ -129,14 +136,21 @@ export default function SignUp() {
                             <p className="text-red-600 text-sm">{registerError.password[0]}</p>
                         )}
                     </div>
-                    <button type="submit"
+                        
+                        <button type="submit"
                         className="self-end 
                             bg-amber-300 rounded-xl 
-                            font-bold text-xl 
-                            py-4 px-6 mt-7 flex text-white
+                            font-bold text-lg 
+                            py-3 px-5 mt-7 flex text-white
                             cursor-pointer
                             items-center gap-2">SIGN UP <RightArrow /></button>
                 </form>
+                <p className="self-end w-full pl-5 mb-5" >Forgot password? <button className="text-red-500 cursor-pointer ease-in-out transition-all hover:scale-110">click here</button></p>
+            </div>
+            <div className="hidden md:flex bg-green-300 w-150 h-150 rounded-r-xl items-center justify-start">
+                <div className="flex items-center justify-center bg-red-500 w-140 h-135 rounded-4xl">
+                    <img src={signUpImage} alt="image" className="object-cover w-full h-full rounded-4xl"/>
+                </div>
             </div>
         </div>
     )
