@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 import { SignInValidationSchema } from "../Schema/SignInValidation";
-import {success, z} from "zod"
+import {z} from "zod"
 import { User } from "../Model/User";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../Schema/jwt";
