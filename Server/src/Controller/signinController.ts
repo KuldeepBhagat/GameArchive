@@ -26,7 +26,7 @@ export const signIn = async (req: Request, res: Response) => {
         if(!user) {
             return res.status(401).json({
                 success: false,
-                error: "Invalid email or password"
+                details: {email: ["Invalid email or password"]}
             })
         }
 
@@ -34,7 +34,7 @@ export const signIn = async (req: Request, res: Response) => {
         if(!validation) {
             return res.status(401).json({
                 success: false,
-                error: "Invalid email or password"
+                details: {password: ["Invalid email or password"]}
             })
         }
 

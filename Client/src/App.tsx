@@ -8,7 +8,7 @@ import ForgetPassword from "./pages/ResetPassword"
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<SignUp />} />
+      <Route path="/" element={<SignIn />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/error" element={<Error />} />

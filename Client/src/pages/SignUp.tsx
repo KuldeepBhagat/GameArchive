@@ -116,7 +116,7 @@ export default function SignUp() {
                         <Email className={IconStyle} />
                         <div className="flex flex-col w-full rounded-md p-2">
                             <label htmlFor="" className={LabelStyle}>Email</label>
-                            <input type="text" name="email" className="cursor-pointer text-lg outline-none pt-1 h-6 focus:placeholder-transparent " placeholder="User name" />
+                            <input type="text" name="email" className="cursor-pointer text-lg outline-none pt-1 h-6 focus:placeholder-transparent " placeholder="Email" />
                         </div >
                     </div>
                     <div className="h-5 ">
@@ -128,7 +128,7 @@ export default function SignUp() {
                         <Password className={IconStyle} />
                         <div className="flex flex-col w-full rounded-md p-2">
                             <label htmlFor="" className={LabelStyle}>Password</label>
-                            <input type="text" name="password" className="cursor-pointer text-lg outline-none pt-1 h-6 focus:placeholder-transparent " placeholder="User name" />
+                            <input type="text" name="password" className="cursor-pointer text-lg outline-none pt-1 h-6 focus:placeholder-transparent " placeholder="Password" />
                         </div >
                     </div>
                     <div className="h-5 ">
@@ -145,7 +145,6 @@ export default function SignUp() {
                             cursor-pointer
                             items-center gap-2">SIGN UP <RightArrow /></button>
                 </form>
-                <p className="self-end w-full pl-5 mb-5" >Forgot password? <button className="text-red-500 cursor-pointer ease-in-out transition-all hover:scale-110">click here</button></p>
             </div>
             <div className="hidden md:flex bg-green-300 w-150 h-150 rounded-r-xl items-center justify-start">
                 <div className="flex items-center justify-center bg-red-500 w-140 h-135 rounded-4xl">
