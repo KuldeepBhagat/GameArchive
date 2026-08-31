@@ -19,7 +19,6 @@ export const connectDB = async (): Promise<void> => {
         } else {
             console.log("An Unknown database connection error occurred")
         }
-
         process.exit(1) 
     }
 };

@@ -5,7 +5,6 @@ import { User } from "../Model/User";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../Schema/jwt";
 
-
 export const signIn = async (req: Request, res: Response) => {
     try {
         const result = SignInValidationSchema.safeParse(req.body)

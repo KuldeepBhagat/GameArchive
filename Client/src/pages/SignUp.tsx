@@ -46,6 +46,9 @@ export default function SignUp() {
             }
             if(response.ok) {
                 const data = await response.json()
+                if(data.success) {
+                    navigate("/verify")
+                }
             }
             setRegisterError({})
         } catch (error) {
