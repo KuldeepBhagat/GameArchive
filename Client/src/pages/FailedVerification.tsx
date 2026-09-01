@@ -1,25 +1,18 @@
-import { useNavigate } from "react-router-dom"
-import { useState } from "react"
-import AppError from "../components/customMethods/AppError"
 import { useLocation } from "react-router-dom"
+import AppError from "../components/customMethods/AppError"
+import { useNavigate } from "react-router-dom"
 
-
-export default function Verify() {
-
-    interface navType {
-        email: string
-    }
+export default function FailedVerification() {
 
     const location = useLocation()
-    const state = location.state as navType
+    const state = location.state
     const navigate = useNavigate()
-    const [VerificationError, setVerificationError] = useState<Record<string, string[]>>({})
 
-    async function handleVerification(OTP: { [k: string]: string }) {
-        const api_endpoint = "/user/verify"
+    async function handleVerify() {
+        const api_endpoint = "/user/verifyRetry"
         const method = "POST"
-        const payload = {...state, ...OTP}
-        console.log(payload)
+        const payload = {...state}
+
         try {
             const response = await fetch(api_endpoint, {
                 method: method,
@@ -34,10 +27,6 @@ export default function Verify() {
                 let errorMessage = "Can't establish connection"
                 try {
                     const errorData = await response.json();
-                    if (response.status == 400) {
-                        setVerificationError(errorData.details)
-                        return;
-                    }
                     backendError = `${method} failed at ${response.url} status: ${response.status}`
                     errorMessage = "Internal Server Error"
                     console.log(errorData.error)
@@ -49,10 +38,13 @@ export default function Verify() {
             if (response.ok) {
                 const data = await response.json()
                 if (data.success) {
-                    navigate("/")
+                    navigate("/verify", {
+                        state: {
+                            email: data.email
+                        }
+                    })
                 }
             }
-            setVerificationError({})
         } catch (error) {
             if (error instanceof AppError) {
                 console.error(error.details)
@@ -66,25 +58,10 @@ export default function Verify() {
         }
     }
 
-    function handleForm(event: React.SubmitEvent<HTMLFormElement>) {
-        event.preventDefault()
-
-        const data = new FormData(event.currentTarget);
-        const OTP = Object.fromEntries(data) as Record<string, string>
-        handleVerification(OTP)
-    }
-
     return (
         <div>
-            <form action="" onSubmit={handleForm}>
-                <input type="text" name="otp" id="" className="border" />
-                <button type="submit">Submit</button>
-                <div className="h-5 ">
-                        {VerificationError.otp && (
-                            <p className="text-red-600 text-sm">{VerificationError.otp[0]}</p>
-                        )}
-                    </div>
-            </form>
+            <h1>Email isn't verified Please Verify to Continue</h1>
+            <button onClick={handleVerify}>Verify</button>
         </div>
     )
 }

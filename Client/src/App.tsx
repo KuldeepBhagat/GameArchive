@@ -5,16 +5,18 @@ import Verify from "./pages/Verify";
 import SignIn from "./pages/SignIn"
 import Error from "./pages/Error";
 import ForgetPassword from "./pages/ResetPassword"
+import FailedVerification from "./pages/FailedVerification";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<SignUp />} />
+      <Route path="/" element={<Home />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/verify" element={<Verify/>} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/error" element={<Error />} />
       <Route path="/forget" element={<ForgetPassword/>} />
+      <Route path="/verifyRetry" element={<FailedVerification/>}/>
     </Routes>
   )
 }

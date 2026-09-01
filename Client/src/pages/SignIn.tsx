@@ -36,6 +36,11 @@ export default function SignIn() {
                     } else if(response.status == 401) {
                         setLoginError(errorData.details)
                         return;
+                    } else if(response.status == 403) {
+                        navigate("/verifyRetry", {state: {
+                            email: errorData.email
+                        }})
+                        return;
                     }
                     backendError = `${method} failed at ${response.url} status: ${response.status}`
                     errorMessage = "Internal Server Error"
@@ -47,6 +52,7 @@ export default function SignIn() {
             }
             if (response.ok) {
                 const data = await response.json()
+                console.log(data)
             }
             setLoginError({})
         } catch (error) {

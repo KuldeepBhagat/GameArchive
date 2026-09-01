@@ -3,7 +3,7 @@ import { z } from "zod"
 import { RegisterValidationSchema } from "../Schema/RegisterValidation"
 import { User } from "../Model/User"
 import { Otp } from "../Model/otp"
-import { sendOTP } from "../Utils/otpSender"
+import { otpSender } from "../Utils/otpSender"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 
@@ -47,12 +47,13 @@ export const registerUser = async (req: Request, res: Response) => {
         const rawOtp = crypto.randomInt(100000, 999999).toString()
         const hashedOtp = await bcrypt.hash(rawOtp, 10)
 
-        await Otp.create({ email, otp: hashedOtp })
-        await sendOTP(email, rawOtp)
+        await Otp.create({ email, hashedOtp })
+        await otpSender(email, rawOtp)
         
         return res.status(201).json({
             success: true,
             message: "User created successfully",
+            email: email
         })
 
     } catch (error) {

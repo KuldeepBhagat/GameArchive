@@ -47,7 +47,9 @@ export default function SignUp() {
             if(response.ok) {
                 const data = await response.json()
                 if(data.success) {
-                    navigate("/verify")
+                    navigate("/verify", {state: {
+                        email: data.email
+                    }})
                 }
             }
             setRegisterError({})

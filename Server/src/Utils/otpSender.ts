@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-export async function sendOTP(toEmail: string, otp: string) {
+export async function otpSender(toEmail: string, otp: string) {
     await transporter.sendMail({
         from: `"MGA" <${process.env.EMAIL}>`,
         to: toEmail,

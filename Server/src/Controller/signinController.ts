@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 import { SignInValidationSchema } from "../Schema/SignInValidation";
-import {z} from "zod"
+import { success, z } from "zod"
 import { User } from "../Model/User";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../Schema/jwt";
@@ -9,31 +9,39 @@ export const signIn = async (req: Request, res: Response) => {
     try {
         const result = SignInValidationSchema.safeParse(req.body)
 
-        if(!result.success) {
+        if (!result.success) {
             const flattened = z.flattenError(result.error)
             return res.status(400).json({
                 success: false,
                 error: "Validation failed",
                 details: flattened.fieldErrors
             })
-            
-        } 
-        
-        const {email, password} = result.data
 
-        const user = await User.findOne({email})
-        if(!user) {
+        }
+
+        const { email, password } = result.data
+
+        const user = await User.findOne({ email })
+        if (!user) {
             return res.status(401).json({
                 success: false,
-                details: {email: ["Invalid email or password"]}
+                details: { email: ["Invalid email or password"] }
             })
         }
 
         const validation = await bcrypt.compare(password, user.passwordHash);
-        if(!validation) {
+        if (!validation) {
             return res.status(401).json({
                 success: false,
-                details: {password: ["Invalid email or password"]}
+                details: { password: ["Invalid email or password"] }
+            })
+        }
+
+        if (!user.verified) {
+            return res.status(403).json({
+                success: false,
+                error: "Email not verified",
+                email: email
             })
         }
 
@@ -49,10 +57,10 @@ export const signIn = async (req: Request, res: Response) => {
                 email: user.email
             }
         })
-        
-    } catch(error) {
-        if(error instanceof Error) {
-            res.status(500).json({error: error.message})
+
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message })
         }
     }
 }
