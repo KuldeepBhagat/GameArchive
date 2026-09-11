@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {registerUser} from "../Controller/registerController"
 import { signIn } from "../Controller/signinController";
-import { authenticateToken } from "../middleware/authMiddleware";
+import { AuthenticateRequest } from "../middleware/authMiddleware";
 import { changePassword } from "../Controller/changePasswordController";
 import { changeUsername } from "../Controller/changeUsernameController";
 import { OtpVerify } from "../Controller/verificationController";
@@ -13,6 +13,6 @@ router.post("/register", registerUser)
 router.post("/signin", signIn)
 router.post("/verify", OtpVerify)
 router.post("/verifyRetry", VerificationRetry)
-router.post("/changePassword", authenticateToken, changePassword)
-router.post("/changeUsername", authenticateToken, changeUsername)
+router.post("/changePassword", AuthenticateRequest, changePassword)
+router.post("/changeUsername", AuthenticateRequest, changeUsername)
 export default router

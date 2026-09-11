@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 export const changePassword = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.userId
+        const tokenId = req.tokenID
+        
         if(!userId) {
             return res.status(400).json({error: "token not found"})
         }

@@ -33,13 +33,15 @@ export default function SignIn() {
                     if (response.status == 400) {
                         setLoginError(errorData.details)
                         return;
-                    } else if(response.status == 401) {
+                    } else if (response.status == 401) {
                         setLoginError(errorData.details)
                         return;
-                    } else if(response.status == 403) {
-                        navigate("/verifyRetry", {state: {
-                            email: errorData.email
-                        }})
+                    } else if (response.status == 403) {
+                        navigate("/verifyRetry", {
+                            state: {
+                                email: errorData.email
+                            }
+                        })
                         return;
                     }
                     backendError = `${method} failed at ${response.url} status: ${response.status}`
@@ -52,7 +54,14 @@ export default function SignIn() {
             }
             if (response.ok) {
                 const data = await response.json()
-                console.log(data)
+                const token = data.token
+                const { username, email } = data.user
+                navigate("/", {
+                    state: {
+                        username,
+                        email
+                    }
+                })
             }
             setLoginError({})
         } catch (error) {
@@ -143,7 +152,7 @@ export default function SignIn() {
                             cursor-pointer
                             items-center gap-2">SIGN IN <RightArrow /></button>
                 </form>
-                <p className="self-end w-full pl-5 mb-5" >Forgot password? <button className="text-red-500 cursor-pointer ease-in-out transition-all hover:scale-110">click here</button></p>
+                <p className="self-end w-full pl-5 mb-5" >Forgot password? <button type="button" className="text-red-600 cursor-pointer ease-in-out transition-all hover:scale-110">click here</button></p>
             </div>
             <div className="hidden md:flex bg-green-300 w-150 h-150 rounded-r-xl items-center justify-start">
                 <div className="flex items-center justify-center bg-red-500 w-140 h-135 rounded-4xl">
