@@ -69,7 +69,7 @@ export const signIn = async (req: Request, res: Response) => {
         const tokenID = crypto.randomUUID()
         const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
-        user.session = user.session.filter(s => s.expiresAt > new Date())
+        user.session = user.session.filter(s => new Date(s.expiresAt).getTime() > Date.now())
         user.session.push({
             tokenID,
             deviceName,

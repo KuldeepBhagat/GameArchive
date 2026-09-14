@@ -24,3 +24,19 @@ export async function otpSender(toEmail: string, otp: string) {
         `
     })
 }
+
+export async function resetLinkSender(toEmail: string, Link: string) {
+    await transporter.sendMail({
+        from: `"MGA" <${process.env.EMAIL}>`,
+        to: toEmail,
+        subject: "Password Reset Request",
+        html: `
+             <div style="font-family: sans-serif; padding: 16px;">
+        <h2>Reset Link Below</h2>
+        <p>Please click on the link to reset your password:</p>
+        <h1 style="letter-spacing: 4px; color: #f59e0b;">${Link}</h1>
+        <p>This code will expire in 5 minutes.</p>
+      </div>
+        `
+    })
+}

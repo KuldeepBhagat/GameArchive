@@ -1,4 +1,3 @@
-import { cursorTo } from "node:readline"
 import { z } from "zod"
 
 export const usernameValidationSchema = (currentUsername: string) => z.object({

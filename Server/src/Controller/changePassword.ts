@@ -10,7 +10,7 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
         const userId = req.userId
         const tokenId = req.tokenID
         
-        if(!userId) {
+        if(!tokenId) {
             return res.status(400).json({error: "token not found"})
         }
 
@@ -41,9 +41,10 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
 
         const newPasswordHash = await bcrypt.hash(newPassword, 10)
         user.passwordHash = newPasswordHash
+        user.session = []
         await user.save()
 
-        return res.status(200).json({success: true, message: "username updated successfully"})
+        return res.status(200).json({success: true, message: "password changed successfully"})
 
     } catch (error) {
         if(error instanceof Error) {

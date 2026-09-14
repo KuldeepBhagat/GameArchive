@@ -8,14 +8,22 @@ export interface SessionI {
   expiresAt: Date;
 }
 
+export interface ResetPass {
+    token: string,
+    expires: Date
+}
+
 export interface UserI extends Document {
     username: string,
     email: string,
     passwordHash: string,
     verified: boolean,
     createdAt: Date
-    session: SessionI[]
+    session: SessionI[],
+    resetPassword: ResetPass | undefined
 }
+
+
 
 const sessionSchema = new Schema<SessionI>(
     {
@@ -27,13 +35,21 @@ const sessionSchema = new Schema<SessionI>(
     }
 )
 
+const resetSchema = new Schema<ResetPass>(
+    {
+        token: {type: String},
+        expires: {type: Date}
+    },
+    {_id: false}
+)
 const userSchema = new Schema<UserI>(
     {
         username: {type: String, required: true, unique: true, trim: true},
         email: {type: String, required: true, unique: true, lowercase: true, trim: true},
         passwordHash: {type: String, required: true},
         verified: {type: Boolean, default: false},
-        session: [sessionSchema]
+        session: [sessionSchema],
+        resetPassword: resetSchema
     },
     {timestamps: true}
 )
