@@ -1,21 +1,19 @@
-import User from "../assets/icons/user.svg?react"
-import Email from "../assets/icons/email.svg?react"
-import Password from "../assets/icons/password.svg?react"
-import RightArrow from "../assets/icons/rightArrow.svg?react"
+import Email from "../../assets/icons/userValidation/email.svg?react"
+import Password from "../../assets/icons/userValidation/password.svg?react"
+import RightArrow from "../../assets/icons/userValidation/rightArrow.svg?react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import AppError from "../components/customMethods/AppError"
-import signUpImage from "../assets/background/authenticationBackground.jpg"
+import AppError from "../../components/customMethods/AppError"
+import signUpImage from "../../assets/background/authenticationBackground.jpg"
 
-export default function SignUp() {
+export default function SignIn() {
 
     const navigate = useNavigate()
 
-    const [registerError, setRegisterError] = useState<Record<string, string[]>>({})
+    const [loginError, setLoginError] = useState<Record<string, string[]>>({})
 
-    async function HandleSignUp(FormData: { [k: string]: string }) {
-
-        const api_endpoint = "/user/register"
+    async function HandleSignIn(formData: { [k: string]: string }) {
+        const api_endpoint = "/user/signin"
         const method = "POST"
 
         try {
@@ -24,7 +22,7 @@ export default function SignUp() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(FormData)
+                body: JSON.stringify(formData)
             })
 
             if (!response.ok) {
@@ -33,33 +31,48 @@ export default function SignUp() {
                 try {
                     const errorData = await response.json();
                     if (response.status == 400) {
-                        setRegisterError(errorData.details)
+                        setLoginError(errorData.details)
+                        return;
+                    } else if (response.status == 401) {
+                        setLoginError(errorData.details)
+                        return;
+                    } else if (response.status == 403) {
+                        navigate("/verifyRetry", {
+                            state: {
+                                email: errorData.email
+                            }
+                        })
                         return;
                     }
                     backendError = `${method} failed at ${response.url} status: ${response.status}`
                     errorMessage = "Internal Server Error"
                     console.log(errorData.error)
                 } catch (error) {
-                    if(error instanceof Error) { backendError = error.message }
+                    if (error instanceof Error) { backendError = error.message }
                 }
-                throw new AppError(errorMessage, {cause: backendError})
+                throw new AppError(errorMessage, { cause: backendError })
             }
-            if(response.ok) {
+            if (response.ok) {
                 const data = await response.json()
-                if(data.success) {
-                    navigate("/verify", {state: {
-                        email: data.email
-                    }})
-                }
+                const token = data.token
+                const { username, email } = data.user
+                navigate("/", {
+                    state: {
+                        username,
+                        email
+                    }
+                })
             }
-            setRegisterError({})
+            setLoginError({})
         } catch (error) {
             if (error instanceof AppError) {
                 console.error(error.details)
-                navigate("/error", {state: {
-                    message: error.message,
-                    details: error.details
-                }})
+                navigate("/error", {
+                    state: {
+                        message: error.message,
+                        details: error.details
+                    }
+                })
             }
         }
     }
@@ -71,8 +84,8 @@ export default function SignUp() {
         const creds = new FormData(event.currentTarget)
         const formEnteries = Object.fromEntries(creds.entries()) as Record<string, string>;
 
-        if (formtype == "signup") {
-            HandleSignUp(formEnteries)
+        if (formtype == "signin") {
+            HandleSignIn(formEnteries)
         }
     }
 
@@ -98,25 +111,14 @@ export default function SignUp() {
                             md:w-150 md:h-150
                             ">
                 <div className="flex flex-col p-6 gap-1">
-                    <h1 className="text-3xl font-bold">Sign Up</h1>
-                    <p className="text-black/50">please sign up to continue</p>
+                    <h1 className="text-3xl font-bold">Sign In</h1>
+                    <p className="text-black/50">please sign in to continue</p>
                 </div>
                 <form action="" className=" gap-2 text-md p-6 w-md 
                                             flex flex-col justify-cente 
                                             items-center self-center"
-                    onSubmit={HandleFrom} name="signup">
-                    <div className={InputContainerStyle}>
-                        <User className={IconStyle} />
-                        <div className="flex flex-col w-full rounded-md p-2">
-                            <label htmlFor="" className={LabelStyle}>User name</label>
-                            <input type="text" name="username" className="cursor-pointer text-lg outline-none pt-1 h-6 focus:placeholder-transparent " placeholder="User name" />
-                        </div >
-                    </div>
-                    <div className="h-5 ">
-                        {registerError.username && (
-                            <p className="text-red-600 text-sm">{registerError.username[0]}</p>
-                        )}
-                    </div>
+                    onSubmit={HandleFrom} name="signin">
+
                     <div className={InputContainerStyle}>
                         <Email className={IconStyle} />
                         <div className="flex flex-col w-full rounded-md p-2">
@@ -125,8 +127,8 @@ export default function SignUp() {
                         </div >
                     </div>
                     <div className="h-5 ">
-                        {registerError.email && (
-                            <p className="text-red-600 text-sm">{registerError.email[0]}</p>
+                        {loginError.email && (
+                            <p className="text-red-600 text-sm">{loginError.email[0]}</p>
                         )}
                     </div>
                     <div className={InputContainerStyle}>
@@ -137,23 +139,24 @@ export default function SignUp() {
                         </div >
                     </div>
                     <div className="h-5 ">
-                        {registerError.password && (
-                            <p className="text-red-600 text-sm">{registerError.password[0]}</p>
+                        {loginError.password && (
+                            <p className="text-red-600 text-sm">{loginError.password[0]}</p>
                         )}
                     </div>
-                        
-                        <button type="submit"
+
+                    <button type="submit"
                         className="self-end 
                             bg-amber-300 rounded-xl 
                             font-bold text-lg 
                             py-3 px-5 mt-7 flex text-white
                             cursor-pointer
-                            items-center gap-2">SIGN UP <RightArrow /></button>
+                            items-center gap-2">SIGN IN <RightArrow /></button>
                 </form>
+                <p className="self-end w-full pl-5 mb-5" >Forgot password? <button type="button" className="text-red-600 cursor-pointer ease-in-out transition-all hover:scale-110">click here</button></p>
             </div>
             <div className="hidden md:flex bg-green-300 w-150 h-150 rounded-r-xl items-center justify-start">
                 <div className="flex items-center justify-center bg-red-500 w-140 h-135 rounded-4xl">
-                    <img src={signUpImage} alt="image" className="object-cover w-full h-full rounded-4xl"/>
+                    <img src={signUpImage} alt="image" className="object-cover w-full h-full rounded-4xl" />
                 </div>
             </div>
         </div>

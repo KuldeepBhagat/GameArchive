@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-import Verify from "./pages/Verify";
-import SignIn from "./pages/SignIn"
-import Error from "./pages/Error";
-import ChangePassword from "./pages/changePassword"
-import ResetPassword from "./pages/ResetPassword";
-import FailedVerification from "./pages/FailedVerification";
-import AuthenticateResetRequest from "./pages/authenticateResetRequest";
+import SignUp from "./pages/UserValidation/SignUp";
+import Verify from "./pages/UserValidation/Verify";
+import SignIn from "./pages/UserValidation/SignIn"
+import Error from "./pages/UserValidation/Error";
+import ChangePassword from "./pages/UserValidation/changePassword"
+import ResetPassword from "./pages/UserValidation/ResetPassword";
+import FailedVerification from "./pages/UserValidation/FailedVerification";
+import AuthenticateResetRequest from "./pages/UserValidation/authenticateResetRequest";
 
 export default function App() {
   return (
