@@ -21,7 +21,7 @@ export default function () {
         { id: 13 }
     ]
 
-    const buttonStyle = `bg-white h-15 w-15 rounded-xl absolute -right-4 
+    const buttonStyle = `bg-white h-15 w-15 rounded-xl absolute 
                          transition-all ease-in-out duration-500 
                          justify-center items-center hidden md:flex`
 
@@ -66,13 +66,13 @@ export default function () {
     }
 
     return (
-        <div className="relative">
+        <div className=" relative w-full">
             <div 
                ref={scrollRef}
                onScroll={() => HandleScroll()}
-               className="w-sm md:w-7xl flex gap-3 items-center overflow-x-auto scrollbar-none ">
+               className="flex gap-3 items-center overflow-x-auto scrollbar-none ">
                 <button onClick={() => scrollLeft()} 
-                   className={` ${buttonStyle} -left-4
+                   className={` ${buttonStyle} -left-2
                      ${leftScrollButton? 
                        "opacity-100 scale-100" : "opacity-0 scale-70" }`}>
                     <ButtonArrowLeft className="h-6 w-6 rounded-full" />
@@ -85,9 +85,9 @@ export default function () {
                             {C.id}
                     </div>
                 ))}
-
+                
                 <button onClick={() => scrollRight()} 
-                   className={` ${buttonStyle} -right-4 
+                   className={` ${buttonStyle} -right-2 
                     ${rightScrollButton?
                         "opacity-100 scale-100" : "opacity-0 scale-70"
                     } `}>
