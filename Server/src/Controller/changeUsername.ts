@@ -1,7 +1,7 @@
 import {type Response} from "express"
 import {type AuthRequest } from "../middleware/authMiddleware";
-import { User } from "../Model/User";
-import { usernameValidationSchema } from "../Schema/changeValidation";
+import { User } from "../DatabaseModel/Account/User";
+import { usernameValidationSchema } from "../Schema/userAuthentication/username_passwordChangeValidation";
 import {z} from "zod"
 import bcrypt from "bcryptjs"
 

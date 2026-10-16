@@ -1,5 +1,5 @@
 import { type Response, type Request } from "express";
-import { Otp } from "../Model/otp";
+import { Otp } from "../DatabaseModel/Account/otp";
 import { otpSender } from "../Utils/otpSender";
 import bcrypt from "bcryptjs";
 import crypto from "crypto"

@@ -5,7 +5,7 @@ import { AuthenticateRequest } from "../middleware/authMiddleware";
 import { changePassword } from "../Controller/changePassword";
 import { changeUsername } from "../Controller/changeUsername";
 import { OtpVerify } from "../Controller/userEmailVerification";
-import { VerificationRetry } from "../Controller/failedVerification";
+import { VerificationRetry } from "../Controller/failedOtpVerification";
 import { resetPassword } from "../Controller/resetPasswordRequest";
 import { resetPasswordValidation } from "../Controller/resetPasswordValidation";
 

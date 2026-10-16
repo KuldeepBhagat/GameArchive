@@ -1,9 +1,9 @@
 import { type Request, type Response } from "express";
-import { SignInValidationSchema } from "../Schema/SignInValidation";
+import { SignInValidationSchema } from "../Schema/userAuthentication/SignInValidation";
 import { z } from "zod"
-import { User } from "../Model/User";
+import { User } from "../DatabaseModel/Account/User";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../Schema/jwt";
+import { generateToken } from "../Schema/userAuthentication/jwt";
 import crypto from "crypto"
 import { UAParser } from "ua-parser-js";
 

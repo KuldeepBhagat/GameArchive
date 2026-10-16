@@ -16,7 +16,7 @@ export default function RandomProducts() {
     return (
         <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
             {cards.map((C) => (
-                <div className="bg-pink-400 w-50 h-80 sm:w-70">
+                <div className="bg-pink-400 w-50 h-80 sm:w-70 rounded-sm">
 
             </div>
             ))}

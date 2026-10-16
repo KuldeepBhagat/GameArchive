@@ -1,9 +1,9 @@
 import { type Request, type Response } from "express"
 import bcrypt from "bcryptjs"
-import { OtpValidation } from "../Schema/otpValidation"
+import { OtpValidation } from "../Schema/userAuthentication/otpValidation"
 import { z } from "zod"
-import { Otp } from "../Model/otp"
-import { User } from "../Model/User"
+import { Otp } from "../DatabaseModel/Account/otp"
+import { User } from "../DatabaseModel/Account/User"
 
 export const OtpVerify = async (req: Request, res: Response) => {
 

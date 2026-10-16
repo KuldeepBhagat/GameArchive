@@ -1,6 +1,6 @@
-import { passwordValidationSchema } from "../Schema/changeValidation";
+import { passwordValidationSchema } from "../Schema/userAuthentication/username_passwordChangeValidation";
 import {z} from "zod"
-import { User } from "../Model/User";
+import { User } from "../DatabaseModel/Account/User";
 import {type AuthRequest } from "../middleware/authMiddleware";
 import { type Response } from "express";
 import bcrypt from "bcryptjs";

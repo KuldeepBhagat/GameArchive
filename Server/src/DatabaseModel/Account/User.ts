@@ -42,7 +42,7 @@ const resetSchema = new Schema<ResetPass>(
     },
     {_id: false}
 )
-const userSchema = new Schema<UserI>(
+const userSchema = new Schema<UserI> (
     {
         username: {type: String, required: true, unique: true, trim: true},
         email: {type: String, required: true, unique: true, lowercase: true, trim: true},

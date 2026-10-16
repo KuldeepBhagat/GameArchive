@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express"
-import { User } from "../Model/User"
+import { User } from "../DatabaseModel/Account/User"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
-import { passwordValidationSchema } from "../Schema/resetValidation"
+import { passwordValidationSchema } from "../Schema/userAuthentication/passwordResetValidation"
 import { z } from "zod"
 
 export const resetPasswordValidation = async (req: Request, res: Response) => {

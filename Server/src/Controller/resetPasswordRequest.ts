@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import { User } from "../Model/User";
-import { emailValidationSchema } from "../Schema/resetValidation";
+import { User } from "../DatabaseModel/Account/User";
+import { emailValidationSchema } from "../Schema/userAuthentication/passwordResetValidation";
 import { z } from "zod"
 import crypto from "crypto"
 import { resetLinkSender } from "../Utils/otpSender";
@@ -36,7 +36,6 @@ export const resetPassword = async (req: Request, res: Response) => {
         if (user.resetPassword?.expires &&
             new Date(user.resetPassword.expires).getTime() > Date.now()
         ) {
-            console.log("true")
             return res.status(400).json({
                 success: false,
                 details: { email: ["please wait until previous request expires within 5min"] }
